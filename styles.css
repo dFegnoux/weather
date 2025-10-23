@@ -1,3 +1,7 @@
+html {
+  font-size: 10px;
+}
+
 body {
   display: flex;
   flex-direction: column;
@@ -7,10 +11,11 @@ body {
   position: relative;
   margin:0;
   box-sizing: border-box;
-  padding: 12px;
+  padding: 1.2rem;
   background: #2A7B9B;
   background: linear-gradient(180deg, rgba(42, 123, 155, 1) 0%, rgba(36, 105, 133, 1) 100%);
   color: #fff;
+  font-size: 1.6rem;
 }
 
 main {
@@ -20,13 +25,20 @@ main {
   align-items: center;
   border: 1px solid #fff;
   border-radius: 8px;
-  padding: 12px;
+  padding: 1.2rem;
 }
 
 .summary {
-  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem
 }
 
 .temperature {
   font-size: x-large;
+}
+
+.interpretation-picture {
+  font-size: 10rem;
 }
