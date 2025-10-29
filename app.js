@@ -1,4 +1,4 @@
-const FORCAST_URL = 'https://api.open-meteo.com/v1/forecast?latitude=48.9765&longitude=2.8748&current=temperature_2m,weather_code&timezone=Europe%2FBerlin&forecast_days=1'
+const FORCAST_URL = 'https://api.open-meteo.com/v1/forecast?latitude=48.9765&longitude=2.8748&current=temperature_2m,weather_code,relative_humidity_2m&timezone=Europe%2FBerlin&forecast_days=1'
 
 /**
  * Get weatjer interpretation per WMO code
@@ -82,9 +82,18 @@ const renderTemperature = (temperature, unit) => {
 }
 
 /**
+ * Replace current humidity value in DOM with provided data
+ * @param {number} humidity 
+ */
+const renderHumidity = (humidity) => {
+  const humidityElement = document.getElementById('current-humidity')
+  humidityElement.innerText = humidity + '%'
+}
+
+/**
  * Fetch current weather information then render it
  */
-const getCurrentTemperature = async () => {
+const getCurrentWeather = async () => {
   try {
     const forecastResponse = await fetch(FORCAST_URL)
     if (!forecastResponse.ok) {
@@ -92,18 +101,16 @@ const getCurrentTemperature = async () => {
     }
     const result = await forecastResponse.json();
 
-    const currentTemperature = result.current.temperature_2m
-    const unit = result.current_units.temperature_2m
-    const currentInterpretation = getWeatherInterpretation(result.current.weather_code)
-
-    renderTemperature(currentTemperature, unit)
-    renderWeatherInterpretation(currentInterpretation)
+    renderTemperature(result.current.temperature_2m, result.current_units.temperature_2m)
+    renderWeatherInterpretation(getWeatherInterpretation(result.current.weather_code))
+    renderHumidity(result.current.relative_humidity_2m)
   } catch (error) {
     alert('Something went wrong, try again later 🤷')
+    console.error(error)
   }
 }
 
 addEventListener("load", () => {
   console.log('loaded')
-  getCurrentTemperature()
+  getCurrentWeather()
 })
