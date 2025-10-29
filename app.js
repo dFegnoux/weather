@@ -1,4 +1,14 @@
-const FORCAST_URL = 'https://api.open-meteo.com/v1/forecast?latitude=48.9765&longitude=2.8748&current=temperature_2m,weather_code,relative_humidity_2m,wind_speed_10m&timezone=Europe%2FBerlin&forecast_days=1'
+const getForecastURL = () => {
+  const searchParams = new URLSearchParams({
+    latitude: '48.9765',
+    longitude: '2.8748',
+    current: 'temperature_2m,weather_code,relative_humidity_2m,wind_speed_10m',
+    timezone: 'Europe/Berlin',
+    forecast_days: '1'
+  })
+    
+  return new URL(`https://api.open-meteo.com/v1/forecast?${searchParams}`)
+}
 
 /**
  * Get weatjer interpretation per WMO code
@@ -105,7 +115,7 @@ const renderWindSpeed = (windSpeed, unit) => {
  */
 const getCurrentWeather = async () => {
   try {
-    const forecastResponse = await fetch(FORCAST_URL)
+    const forecastResponse = await fetch(getForecastURL())
     if (!forecastResponse.ok) {
       throw new Error(`Response status: ${forecastResponse.status}`);
     }
