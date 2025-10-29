@@ -1,4 +1,4 @@
-const FORCAST_URL = 'https://api.open-meteo.com/v1/forecast?latitude=48.9765&longitude=2.8748&current=temperature_2m,weather_code,relative_humidity_2m&timezone=Europe%2FBerlin&forecast_days=1'
+const FORCAST_URL = 'https://api.open-meteo.com/v1/forecast?latitude=48.9765&longitude=2.8748&current=temperature_2m,weather_code,relative_humidity_2m,wind_speed_10m&timezone=Europe%2FBerlin&forecast_days=1'
 
 /**
  * Get weatjer interpretation per WMO code
@@ -91,6 +91,16 @@ const renderHumidity = (humidity) => {
 }
 
 /**
+ * Replace current wind speed value in DOM with provided data
+ * @param {number} windSpeed 
+ * @param {string} unit 
+ */
+const renderWindSpeed = (windSpeed, unit) => {
+  const humidityElement = document.getElementById('current-wind-speed')
+  humidityElement.innerText = windSpeed + ' ' + unit
+}
+
+/**
  * Fetch current weather information then render it
  */
 const getCurrentWeather = async () => {
@@ -104,6 +114,7 @@ const getCurrentWeather = async () => {
     renderTemperature(result.current.temperature_2m, result.current_units.temperature_2m)
     renderWeatherInterpretation(getWeatherInterpretation(result.current.weather_code))
     renderHumidity(result.current.relative_humidity_2m)
+    renderWindSpeed(result.current.wind_speed_10m, result.current_units.wind_speed_10m)
   } catch (error) {
     alert('Something went wrong, try again later 🤷')
     console.error(error)
