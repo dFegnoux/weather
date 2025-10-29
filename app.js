@@ -6,12 +6,12 @@ const getForecastURL = () => {
     timezone: 'Europe/Berlin',
     forecast_days: '1'
   })
-    
+
   return new URL(`https://api.open-meteo.com/v1/forecast?${searchParams}`)
 }
 
 /**
- * Get weatjer interpretation per WMO code
+ * Get weather interpretation per WMO code
  * @param {number} code WMO code : 0 to 99
  * @returns "{picture: string, text: string}"
  */
