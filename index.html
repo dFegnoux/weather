@@ -9,11 +9,20 @@
       <div class="summary">
         <div id="current-interpretation-picture" class="interpretation-picture"></div>
         <div id="current-interpretation-text"></div>
-        <div class="temperature">🌡️&nbsp;<span id="current-temperature">...</span></div>
-        <div class="humidity">💦&nbsp;<span id="current-humidity">...</span></div>
-        <div class="wind">🌬️&nbsp;<span id="current-wind-speed">...</span></div>
-        <div class="city">🏠️&nbsp;<span id="current-city">Crégy-les-Meaux</span></div>
+        <div class="details">
+          <div class="temperature">🌡️&nbsp;<span id="current-temperature">...</span></div>
+          <div class="humidity">💦&nbsp;<span id="current-humidity">...</span></div>
+          <div class="wind">🌬️&nbsp;<span id="current-wind-speed">...</span></div>
+          <div class="city">🏠️&nbsp;<span id="current-city">Crégy-les-Meaux</span></div>
+        </div>
       </div>
+      <form id="change-city-form" class="change-city-form">
+        <label for="city-input">Changer la ville :</label>
+        <div class="input-wrapper">
+          <input id="city-input" type="text" name="city" placeholder="Angers" />
+          <ul id="suggestions-list" class="suggestions-list"></ul>
+        </div>
+      </form>
     </main>
     <script src="app.js"></script>
   </body>

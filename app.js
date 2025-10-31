@@ -1,7 +1,7 @@
-const getForecastURL = () => {
+const getForecastURL = ({ latitude, longitude }) => {
   const searchParams = new URLSearchParams({
-    latitude: '48.9765',
-    longitude: '2.8748',
+    latitude,
+    longitude,
     current: 'temperature_2m,weather_code,relative_humidity_2m,wind_speed_10m',
     timezone: 'Europe/Berlin',
     forecast_days: '1'
@@ -70,68 +70,111 @@ const getWeatherInterpretation = (code) => {
 }
 }
 
-/**
- * Replace current interpretation values in DOM with provided data
- * @param {string} interpretation 
- */
-const renderWeatherInterpretation = (interpretation) => {
-  const interpreationPicture = document.getElementById('current-interpretation-picture')
-  interpreationPicture.innerText = interpretation.picture
-  const interpretationText = document.getElementById('current-interpretation-text')
-  interpretationText.innerText = interpretation.text
+const setCurrentInterpretation = (interpretation) => {
+  document.getElementById('current-interpretation-picture').innerText = interpretation.picture
+  document.getElementById('current-interpretation-text').innerText = interpretation.text
 }
 
-/**
- * Replace current temperature value in DOM with provided data
- * @param {number} temperature 
- * @param {string} unit 
- */
-const renderTemperature = (temperature, unit) => {
-  const temperatureElement = document.getElementById('current-temperature')
-  temperatureElement.innerText = temperature + ' ' + unit
+const setCurrentTemperature = (temperature, unit) => {
+  document.getElementById('current-temperature').innerText = temperature + ' ' + unit
 }
 
-/**
- * Replace current humidity value in DOM with provided data
- * @param {number} humidity 
- */
-const renderHumidity = (humidity) => {
-  const humidityElement = document.getElementById('current-humidity')
-  humidityElement.innerText = humidity + '%'
+const setCurrentHumidity = (humidity) => {
+  document.getElementById('current-humidity').innerText = humidity + '%'
 }
 
-/**
- * Replace current wind speed value in DOM with provided data
- * @param {number} windSpeed 
- * @param {string} unit 
- */
-const renderWindSpeed = (windSpeed, unit) => {
-  const humidityElement = document.getElementById('current-wind-speed')
-  humidityElement.innerText = windSpeed + ' ' + unit
+const setCurrentWind = (windSpeed, unit) => {
+  document.getElementById('current-wind-speed').innerText = windSpeed + ' ' + unit
+}
+
+const setCurrentCity = (city) => {
+  document.getElementById('current-wind-speed').innerText = city
 }
 
 /**
  * Fetch current weather information then render it
  */
-const getCurrentWeather = async () => {
+const getCurrentWeather = async (geoCode) => {
   try {
-    const forecastResponse = await fetch(getForecastURL())
+    const forecastResponse = await fetch(getForecastURL(geoCode))
     if (!forecastResponse.ok) {
       throw new Error(`Response status: ${forecastResponse.status}`);
     }
     const result = await forecastResponse.json();
 
-    renderTemperature(result.current.temperature_2m, result.current_units.temperature_2m)
-    renderWeatherInterpretation(getWeatherInterpretation(result.current.weather_code))
-    renderHumidity(result.current.relative_humidity_2m)
-    renderWindSpeed(result.current.wind_speed_10m, result.current_units.wind_speed_10m)
+    setCurrentTemperature(result.current.temperature_2m, result.current_units.temperature_2m)
+    setCurrentInterpretation(getWeatherInterpretation(result.current.weather_code))
+    setCurrentHumidity(result.current.relative_humidity_2m)
+    setCurrentWind(result.current.wind_speed_10m, result.current_units.wind_speed_10m)
   } catch (error) {
     alert('Something went wrong, try again later 🤷')
     console.error(error)
   }
 }
 
+const clearSuggestions = () => {
+  document.getElementById('suggestions-list').innerHTML = ''
+  document.getElementById('city-input').value = ''
+}
+
+const chooseSuggestion = (event) => {
+  alert('change location to'+ event.target.getAttribute('data-longitude') + ' ' + event.target.getAttribute('data-latitude'))
+  document.getElementById('current-city').innerText = event.target.innerText
+  getCurrentWeather({
+    longitude: event.target.getAttribute('data-longitude'),
+    latitude: event.target.getAttribute('data-latitude')
+  })
+  clearSuggestions()
+}
+
+const handleCityInputChange = async (event) => {
+  const currentValue = event.target.value
+  
+  if(!currentValue) return
+
+  try {
+    const params = new URLSearchParams({
+      name: currentValue,
+      count:5,
+      language: 'fr',
+      format:'json',
+      countryCode:'FR'
+    })
+    const geoCodeResponse = await fetch('https://geocoding-api.open-meteo.com/v1/search?'+params)
+    if (!geoCodeResponse.ok) {
+      throw new Error(`GeoCode Response status: ${geoCodeResponse.status}`);
+    }
+    const result = await geoCodeResponse.json();
+    const suggestionList = document.getElementById('suggestions-list')
+    suggestionList.innerHTML = ""
+
+    if(!Array.isArray(result.results)) return
+
+    result.results.forEach((suggestion) => {
+      const newSuggestion = document.createElement('li')
+      newSuggestion.innerText = suggestion.name
+      newSuggestion.setAttribute('data-longitude', suggestion.longitude)
+      newSuggestion.setAttribute('data-latitude', suggestion.latitude)
+      newSuggestion.addEventListener('click', chooseSuggestion)
+      suggestionList.append(newSuggestion)
+    })
+  } catch (error) {
+    alert('Something went wrong retrieving city, try again later 🤷')
+    console.error(error)
+  }
+}
+
+const handleCityInput = () => {
+  // handle typing in city field
+  const cityInput = document.getElementById('city-input')
+  cityInput.addEventListener('keyup', handleCityInputChange)
+}
+
 addEventListener("load", () => {
-  console.log('loaded')
-  getCurrentWeather()
+  // default render
+  getCurrentWeather({
+    latitude: '48.9765',
+    longitude: '2.8748'
+  })
+  handleCityInput()
 })
