@@ -11,7 +11,7 @@ const getForecastURL = ({ latitude, longitude }) => {
 }
 
 /**
- * Get weather interpretation per WMO code
+ * Get weather interpretation per World Meteorological Organization observation code
  * @param {number} code WMO code : 0 to 99
  * @returns "{picture: string, text: string}"
  */
@@ -91,25 +91,25 @@ const setCurrentCity = (city) => {
   document.getElementById('current-wind-speed').innerText = city
 }
 
-/**
- * Fetch current weather information then render it
- */
-const getCurrentWeather = async (geoCode) => {
+const fetchCurrentWeather = async (geoCode) => {
   try {
     const forecastResponse = await fetch(getForecastURL(geoCode))
     if (!forecastResponse.ok) {
       throw new Error(`Response status: ${forecastResponse.status}`);
     }
-    const result = await forecastResponse.json();
-
-    setCurrentTemperature(result.current.temperature_2m, result.current_units.temperature_2m)
-    setCurrentInterpretation(getWeatherInterpretation(result.current.weather_code))
-    setCurrentHumidity(result.current.relative_humidity_2m)
-    setCurrentWind(result.current.wind_speed_10m, result.current_units.wind_speed_10m)
-  } catch (error) {
-    alert('Something went wrong, try again later 🤷')
-    console.error(error)
+    return await forecastResponse.json();
+  } catch(e) {
+    console.error('Error while getting current weather', e)
   }
+}
+
+const displayCurrentWeather = (data) => {
+  if(!data) return
+  
+  setCurrentTemperature(data.current.temperature_2m, data.current_units.temperature_2m)
+  setCurrentInterpretation(getWeatherInterpretation(data.current.weather_code))
+  setCurrentHumidity(data.current.relative_humidity_2m)
+  setCurrentWind(data.current.wind_speed_10m, data.current_units.wind_speed_10m)
 }
 
 const clearSuggestions = () => {
@@ -117,24 +117,20 @@ const clearSuggestions = () => {
   document.getElementById('city-input').value = ''
 }
 
-const chooseSuggestion = (event) => {
-  alert('change location to'+ event.target.getAttribute('data-longitude') + ' ' + event.target.getAttribute('data-latitude'))
+const chooseSuggestion = async (event) => {
   document.getElementById('current-city').innerText = event.target.innerText
-  getCurrentWeather({
+  const currentWeatherData = await fetchCurrentWeather({
     longitude: event.target.getAttribute('data-longitude'),
     latitude: event.target.getAttribute('data-latitude')
   })
+  displayCurrentWeather(currentWeatherData)
   clearSuggestions()
 }
 
-const handleCityInputChange = async (event) => {
-  const currentValue = event.target.value
-  
-  if(!currentValue) return
-
+const fetchLocationSuggestions = async (text) => {
   try {
     const params = new URLSearchParams({
-      name: currentValue,
+      name: text,
       count:5,
       language: 'fr',
       format:'json',
@@ -144,37 +140,55 @@ const handleCityInputChange = async (event) => {
     if (!geoCodeResponse.ok) {
       throw new Error(`GeoCode Response status: ${geoCodeResponse.status}`);
     }
-    const result = await geoCodeResponse.json();
-    const suggestionList = document.getElementById('suggestions-list')
-    suggestionList.innerHTML = ""
-
-    if(!Array.isArray(result.results)) return
-
-    result.results.forEach((suggestion) => {
-      const newSuggestion = document.createElement('li')
-      newSuggestion.innerText = suggestion.name
-      newSuggestion.setAttribute('data-longitude', suggestion.longitude)
-      newSuggestion.setAttribute('data-latitude', suggestion.latitude)
-      newSuggestion.addEventListener('click', chooseSuggestion)
-      suggestionList.append(newSuggestion)
-    })
-  } catch (error) {
-    alert('Something went wrong retrieving city, try again later 🤷')
-    console.error(error)
+    return await geoCodeResponse.json();
+  } catch(error) {
+    console.error('Something went wrong while getting location suggestions', error)
   }
 }
 
+const displayLocationSuggestions = (data) => {
+  const suggestionList = document.getElementById('suggestions-list')
+  
+  // Empty previous list
+  suggestionList.innerHTML = ""
+
+  if(!Array.isArray(data.results)) return
+
+  data.results.forEach((suggestion) => {
+    const newSuggestion = document.createElement('li')
+    newSuggestion.innerText = `${suggestion.name} (${suggestion.admin1})`
+    newSuggestion.setAttribute('data-longitude', suggestion.longitude)
+    newSuggestion.setAttribute('data-latitude', suggestion.latitude)
+    newSuggestion.addEventListener('click', chooseSuggestion)
+    suggestionList.append(newSuggestion)
+  })
+}
+
+const handleCityInputChange = async (event) => {
+  const currentValue = event.target.value
+  
+  // Don't do anything until value is truthy
+  if(!currentValue) return
+
+  const suggestions = await fetchLocationSuggestions(currentValue)
+  displayLocationSuggestions(suggestions)
+}
+
+/**
+ * Listen when user types in search bar
+ */
 const handleCityInput = () => {
-  // handle typing in city field
   const cityInput = document.getElementById('city-input')
   cityInput.addEventListener('keyup', handleCityInputChange)
 }
 
-addEventListener("load", () => {
+addEventListener("load", async () => {
   // default render
-  getCurrentWeather({
+  const defaultGeoCode = {
     latitude: '48.9765',
     longitude: '2.8748'
-  })
+  }
+  const defaultCurrentWeatherData = await fetchCurrentWeather(defaultGeoCode)
+  displayCurrentWeather(defaultCurrentWeatherData)
   handleCityInput()
 })
