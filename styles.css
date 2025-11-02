@@ -20,6 +20,7 @@ body {
   background: linear-gradient(180deg, rgba(42, 123, 155, 1) 0%, rgba(36, 105, 133, 1) 100%);
   color: #fff;
   font-size: 1.6rem;
+  overflow-x: hidden;
 }
 
 main {
@@ -57,18 +58,18 @@ main {
 }
 
 .change-city-form {
-  justify-self: end;
-}
-
-.input-wrapper {
   position: relative;
-}
-
-.input-wrapper > * {
-  width: 100%
+  display: flex;
+  justify-self: end;
+  gap: 1rem;
+  justify-content: space-between;
+  width: 100%;
 }
 
 .suggestions-list {
+  position: absolute;
+  bottom: 100%;
+  width: 100%;
   background: white;
   color: black;
   list-style: none;

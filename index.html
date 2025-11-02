@@ -3,6 +3,7 @@
   <head>
     <title>Weather App</title>
     <link rel="stylesheet" href="styles.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
   </head>
   <body>
     <main>
@@ -18,10 +19,8 @@
       </div>
       <form id="change-city-form" class="change-city-form">
         <label for="city-input">Changer la ville :</label>
-        <div class="input-wrapper">
-          <input id="city-input" type="text" name="city" placeholder="Angers" />
-          <ul id="suggestions-list" class="suggestions-list"></ul>
-        </div>
+        <input id="city-input" type="text" name="city" placeholder="Angers" />
+        <ul id="suggestions-list" class="suggestions-list"></ul>
       </form>
     </main>
     <script src="app.js"></script>
