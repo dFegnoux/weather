@@ -1,6 +1,8 @@
 # Application Météo
 
-Une application web simple pour consulter les prévisions météo utilisant l'API Open-Meteo.
+Une application web simple pour consulter les prévisions météo utilisant l'API [Open-Meteo](https://open-meteo.com/).
+
+Live app: https://dfegnoux.github.io/weather/
 
 ## Structure du projet
 
