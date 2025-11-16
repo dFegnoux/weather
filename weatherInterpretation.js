@@ -15,6 +15,14 @@ export const getWeatherInterpretation = (code) => {
       return { picture: '🌦️', text: 'Partiellement nuageux' }
     case 3:
       return { picture: '☁️', text: 'Ciel couvert' }
+    case 45:
+      return { picture: '🌫️', text: 'Brouillard, ciel non visible' }
+    case 46:
+      return { picture: '🌫️', text: 'Brouillard, ciel visible' }
+    case 47:
+      return { picture: '🌫️', text: 'Brouillard, ciel non visible' }
+    case 48:
+      return { picture: '🌫️', text: 'Nappes de brouillard, ciel visible' }
     case 51:
       return { picture: '💦', text: 'Bruine : Légère' }
     case 53:
