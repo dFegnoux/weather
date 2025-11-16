@@ -1,6 +1,19 @@
 import { getWeatherInterpretation } from './weatherInterpretation.js'
 
 /**
+ * Met à jour l'heure du dernier fetch dans le DOM
+ * @param {string} time - date/heure format iso 
+ */
+export const setCurrentTime = (time) => {
+  const date = new Date(time)
+  const hours = date.getHours()
+  const minutes = date.getMinutes()
+  const formattedMinutes = minutes < 10 ? `0${parseInt(minutes, 10)}` : minutes
+  
+  document.getElementById('current-time').innerText = `${hours}:${formattedMinutes}`
+}
+
+/**
  * Met à jour l'interprétation météo dans le DOM
  * @param {Object} interpretation - Objet contenant l'emoji et le texte
  * @param {string} interpretation.picture - Emoji météo
@@ -50,8 +63,9 @@ export const setCurrentCity = (city) => {
  * @param {Object} data - Données météo de l'API Open-Meteo
  */
 export const displayCurrentWeather = (data) => {
-  if(!data) return
+  if (!data) return
 
+  setCurrentTime(data.current.time)
   setCurrentTemperature(data.current.temperature_2m, data.current_units.temperature_2m)
   setCurrentInterpretation(getWeatherInterpretation(data.current.weather_code))
   setCurrentHumidity(data.current.relative_humidity_2m)
