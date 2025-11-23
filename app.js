@@ -18,9 +18,9 @@ addEventListener("load", async () => {
   }
 
   // Charge et affiche les données météo par défaut
-  const defaultCurrentWeatherData = await fetchCurrentWeather(defaultGeoCode)
-  displayCurrentWeather(defaultCurrentWeatherData.current, defaultCurrentWeatherData.current_units)
-  displayHourlyWeather(defaultCurrentWeatherData.hourly, defaultCurrentWeatherData.current_units)
+  const defaultWeather = await fetchCurrentWeather(defaultGeoCode)
+  displayCurrentWeather(defaultWeather.current, defaultWeather.current_units)
+  displayHourlyWeather(defaultWeather.hourly, defaultWeather.current_units, defaultWeather.current.time)
 
   // Initialise la gestion de la saisie de ville
   initializeCityInput()

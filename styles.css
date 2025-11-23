@@ -123,9 +123,13 @@ main {
   gap: .8rem;
 }
 
-.hour-forcast-item.active {
+.hour-forcast-item.present {
   background: rgba(255,255,255,.1);
   border-color: #fff;
+}
+
+.hour-forcast-item.past {
+  opacity: .3;
 }
 
 .hour-forcast-item .interpretation {

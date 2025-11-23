@@ -1,11 +1,11 @@
 import { getWeatherInterpretation } from './weatherInterpretation.js'
-import { formatTime } from './utils/formatTime.js'
+import { formatTime, getRelativeTime } from './utils/time.js'
 
 /**
  * Met à jour l'heure du dernier fetch dans le DOM
  * @param {string} time - date/heure format iso 
  */
-export const setCurrentTime = (time) => {
+const setCurrentTime = (time) => {
   document.getElementById('current-time').innerText = formatTime(time)
 }
 
@@ -73,9 +73,10 @@ export const displayCurrentWeather = (data, units) => {
  * Construit un élement météo pour une heure donnée
  * @param {Object} data - Données préformattées à injecter dans le DOM
  */
-export const getHourlyNode = ({ formattedTime, temperature, wind, humidity, interpretation, isActive }) => {
+const getHourlyNode = ({ formattedTime, temperature, wind, humidity, interpretation, relativeTime }) => {
   const hourEl = document.createElement('div')
-  hourEl.className = `hour-forcast-item ${isActive ? 'active' : ''}`
+  hourEl.className = `hour-forcast-item ${relativeTime}`
+  hourEl.id = relativeTime === 'present' ? 'active-hour' : ''
 
   const timeEl = document.createElement('div')
   timeEl.className = 'time'
@@ -106,22 +107,25 @@ export const getHourlyNode = ({ formattedTime, temperature, wind, humidity, inte
  * Affiche toutes les données météo par heure dans le DOM
  * @param {Object} data - Données météo de l'API Open-Meteo
  * @param {Object} units - Unités météo de l'API Open-Meteo
+ * @param {String} fetchTime - Heure actuelle donnée par l'API Open-Meteo format ISO
  */
-export const displayHourlyWeather = (data, units) => {
+export const displayHourlyWeather = (data, units, fetchTime) => {
   if (!data || !units) return
   
   const hourlyContainerEl = document.getElementById('hourly-container')
 
-  const hoursElList = data.time.map((time, index) => {
+  const hoursList = data.time.map((time, index) => {
     const formattedTime = formatTime(time)
     const temperature = data.temperature_2m[index] + '&nbsp;' + units.temperature_2m
     const wind = data.wind_speed_10m[index] + '&nbsp;' + units.wind_speed_10m
     const humidity = data.relative_humidity_2m[index] + '&nbsp;' + units.relative_humidity_2m
     const interpretation = getWeatherInterpretation(data.weather_code[index])
-    const isActive = index === 3
+    const relativeTime = getRelativeTime(fetchTime, time)
 
-    return getHourlyNode({formattedTime, temperature, wind, humidity, interpretation, isActive})
+    return getHourlyNode({formattedTime, temperature, wind, humidity, interpretation, relativeTime})
   })
 
-  hourlyContainerEl.append(...hoursElList)
+  hourlyContainerEl.append(...hoursList)
+  const activeHourEl = document.getElementById('active-hour')
+  activeHourEl.scrollIntoView({ behavior: 'smooth', inline: 'center'})
 }
