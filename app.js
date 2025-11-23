@@ -4,7 +4,7 @@
  */
 
 import { fetchCurrentWeather } from './weatherAPI.js'
-import { displayCurrentWeather } from './domUpdaters.js'
+import { displayCurrentWeather, displayHourlyWeather } from './domUpdaters.js'
 import { initializeCityInput } from './locationSuggestions.js'
 
 /**
@@ -19,7 +19,8 @@ addEventListener("load", async () => {
 
   // Charge et affiche les données météo par défaut
   const defaultCurrentWeatherData = await fetchCurrentWeather(defaultGeoCode)
-  displayCurrentWeather(defaultCurrentWeatherData)
+  displayCurrentWeather(defaultCurrentWeatherData.current, defaultCurrentWeatherData.current_units)
+  displayHourlyWeather(defaultCurrentWeatherData.hourly, defaultCurrentWeatherData.current_units)
 
   // Initialise la gestion de la saisie de ville
   initializeCityInput()

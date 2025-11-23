@@ -7,19 +7,25 @@
   </head>
   <body>
     <main>
-      <div class="summary">
-        <div class="current-interpretation">
-          <div id="current-interpretation-picture" class="interpretation-picture"></div>
-          <div id="current-interpretation-text"></div>
+      <section class="panel">
+        <h1 class="panel-title">En ce moment</h1>
+        <div class="panel-content">
+          <div class="current-interpretation">
+            <div id="current-interpretation-picture" class="interpretation-picture"></div>
+            <div id="current-interpretation-text"></div>
+          </div>
+          <div class="details">
+            <div class="time">⌚&nbsp;<span id="current-time">...</span>&nbsp;à&nbsp;<span id="current-city">Crégy-les-Meaux</span></div>
+            <div class="temperature">🌡️&nbsp;<span id="current-temperature">...</span></div>
+            <div class="humidity">💦&nbsp;<span id="current-humidity">...</span></div>
+            <div class="wind">🌬️&nbsp;<span id="current-wind-speed">...</span></div>
+          </div>
         </div>
-        <div class="details">
-          <div class="time">⌚&nbsp;<span id="current-time">...</span>&nbsp;à&nbsp;<span id="current-city">Crégy-les-Meaux</span></div>
-          <div class="temperature">🌡️&nbsp;<span id="current-temperature">...</span></div>
-          <div class="humidity">💦&nbsp;<span id="current-humidity">...</span></div>
-          <div class="wind">🌬️&nbsp;<span id="current-wind-speed">...</span></div>
-          <div class="city">🏠️&nbsp;</div>
-        </div>
-      </div>
+      </section>
+      <section class="panel">
+        <h1 class="panel-title">Par heure</h1>
+        <div id="hourly-container" class="scrollable-h"></div>
+      </section>
       <form id="change-city-form" class="change-city-form">
         <label for="city-input">Changer la ville :</label>
         <input id="city-input" type="text" name="city" placeholder="Angers" />

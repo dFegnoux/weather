@@ -10,6 +10,7 @@ export const getForecastURL = ({ latitude, longitude }) => {
     latitude,
     longitude,
     current: 'temperature_2m,weather_code,relative_humidity_2m,wind_speed_10m',
+    hourly: 'temperature_2m,weather_code,relative_humidity_2m,wind_speed_10m',
     timezone: 'Europe/Berlin',
     forecast_days: '1'
   })
@@ -21,7 +22,7 @@ export const getForecastURL = ({ latitude, longitude }) => {
  * Récupère les données météo actuelles
  * @param {Object} geoCode - Coordonnées géographiques
  * @param {string} geoCode.latitude - Latitude
- * @param {string} geoCode.longitude - Longitude
+ * @param {string} geoCode.longitude - Longiude
  * @returns {Promise<Object|undefined>} Données météo ou undefined en cas d'erreur
  */
 export const fetchCurrentWeather = async (geoCode) => {

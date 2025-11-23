@@ -1,16 +1,12 @@
 import { getWeatherInterpretation } from './weatherInterpretation.js'
+import { formatTime } from './utils/formatTime.js'
 
 /**
  * Met à jour l'heure du dernier fetch dans le DOM
  * @param {string} time - date/heure format iso 
  */
 export const setCurrentTime = (time) => {
-  const date = new Date(time)
-  const hours = date.getHours()
-  const minutes = date.getMinutes()
-  const formattedMinutes = minutes < 10 ? `0${parseInt(minutes, 10)}` : minutes
-  
-  document.getElementById('current-time').innerText = `${hours}:${formattedMinutes}`
+  document.getElementById('current-time').innerText = formatTime(time)
 }
 
 /**
@@ -61,13 +57,71 @@ export const setCurrentCity = (city) => {
 /**
  * Affiche toutes les données météo actuelles dans le DOM
  * @param {Object} data - Données météo de l'API Open-Meteo
+ * @param {Object} units - Unités météo de l'API Open-Meteo
  */
-export const displayCurrentWeather = (data) => {
-  if (!data) return
+export const displayCurrentWeather = (data, units) => {
+  if (!data || !units) return
 
-  setCurrentTime(data.current.time)
-  setCurrentTemperature(data.current.temperature_2m, data.current_units.temperature_2m)
-  setCurrentInterpretation(getWeatherInterpretation(data.current.weather_code))
-  setCurrentHumidity(data.current.relative_humidity_2m)
-  setCurrentWind(data.current.wind_speed_10m, data.current_units.wind_speed_10m)
+  setCurrentTime(data.time)
+  setCurrentTemperature(data.temperature_2m, units.temperature_2m)
+  setCurrentInterpretation(getWeatherInterpretation(data.weather_code))
+  setCurrentHumidity(data.relative_humidity_2m)
+  setCurrentWind(data.wind_speed_10m, units.wind_speed_10m)
+}
+
+/**
+ * Construit un élement météo pour une heure donnée
+ * @param {Object} data - Données préformattées à injecter dans le DOM
+ */
+export const getHourlyNode = ({ formattedTime, temperature, wind, humidity, interpretation, isActive }) => {
+  const hourEl = document.createElement('div')
+  hourEl.className = `hour-forcast-item ${isActive ? 'active' : ''}`
+
+  const timeEl = document.createElement('div')
+  timeEl.className = 'time'
+  timeEl.innerHTML = formattedTime
+
+  const temperatureEl = document.createElement('div')
+  temperatureEl.className = 'temperature'
+  temperatureEl.innerHTML = temperature
+
+  const windEl = document.createElement('div')
+  windEl.className = 'wind'
+  windEl.innerHTML = wind
+
+  const humidityEl = document.createElement('div')
+  humidityEl.className = 'humidity'
+  humidityEl.innerHTML = humidity
+
+  const interpretationEl = document.createElement('div')
+  interpretationEl.className = 'interpretation'
+  interpretationEl.innerHTML = interpretation.picture
+
+  hourEl.append(timeEl, interpretationEl, temperatureEl, windEl, humidityEl)
+
+  return hourEl
+}
+
+/**
+ * Affiche toutes les données météo par heure dans le DOM
+ * @param {Object} data - Données météo de l'API Open-Meteo
+ * @param {Object} units - Unités météo de l'API Open-Meteo
+ */
+export const displayHourlyWeather = (data, units) => {
+  if (!data || !units) return
+  
+  const hourlyContainerEl = document.getElementById('hourly-container')
+
+  const hoursElList = data.time.map((time, index) => {
+    const formattedTime = formatTime(time)
+    const temperature = data.temperature_2m[index] + '&nbsp;' + units.temperature_2m
+    const wind = data.wind_speed_10m[index] + '&nbsp;' + units.wind_speed_10m
+    const humidity = data.relative_humidity_2m[index] + '&nbsp;' + units.relative_humidity_2m
+    const interpretation = getWeatherInterpretation(data.weather_code[index])
+    const isActive = index === 3
+
+    return getHourlyNode({formattedTime, temperature, wind, humidity, interpretation, isActive})
+  })
+
+  hourlyContainerEl.append(...hoursElList)
 }
