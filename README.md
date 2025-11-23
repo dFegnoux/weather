@@ -8,25 +8,12 @@ Live app: https://dfegnoux.github.io/weather/
 
 ### Modules
 
+- **`utils`** - Fonctons utilitaires au projet
 - **`weatherAPI.js`** - Gestion des appels à l'API météo
-  - `getForecastURL()` - Construction des URLs d'API
-  - `fetchCurrentWeather()` - Récupération des données météo
-  - `fetchLocationSuggestions()` - Récupération des suggestions de villes
-
 - **`weatherInterpretation.js`** - Interprétation des codes météo
-  - `getWeatherInterpretation()` - Conversion des codes WMO en descriptions
-
 - **`domUpdaters.js`** - Manipulation du DOM
-  - `setCurrentTemperature()`, `setCurrentHumidity()`, etc. - Mise à jour des éléments
-  - `displayCurrentWeather()` - Affichage complet des données météo
-
 - **`locationSuggestions.js`** - Gestion des suggestions de localisation
-  - `displayLocationSuggestions()` - Affichage des suggestions
-  - `chooseSuggestion()` - Sélection d'une suggestion
-  - `initializeCityInput()` - Initialisation de l'autocomplete
-
 - **`app.js`** - Point d'entrée principal
-  - Orchestration de l'initialisation de l'application
 
 ## Utilisation
 
