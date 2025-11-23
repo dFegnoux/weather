@@ -8,7 +8,7 @@ Live app: https://dfegnoux.github.io/weather/
 
 ### Modules
 
-- **`utils`** - Fonctons utilitaires au projet
+- **`utils`** - Fonctions utilitaires au projet
 - **`weatherAPI.js`** - Gestion des appels à l'API météo
 - **`weatherInterpretation.js`** - Interprétation des codes météo
 - **`domUpdaters.js`** - Manipulation du DOM
