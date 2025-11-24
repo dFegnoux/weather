@@ -112,7 +112,7 @@ main {
   padding-bottom: .8rem;
 }
 
-.hour-forcast-item {
+.scrollable-h .scrollable-item {
   background: rgba(255,255,255,.1);
   border: 1px solid transparent;
   border-radius: .8rem;
@@ -123,19 +123,27 @@ main {
   gap: .8rem;
 }
 
-.hour-forcast-item.present {
+.scrollable-h .present {
   background: rgba(255,255,255,.1);
   border-color: #fff;
 }
 
-.hour-forcast-item.past {
+.scrollable-h .past {
   opacity: .3;
 }
 
-.hour-forcast-item .interpretation {
+.scrollable-h .interpretation {
   font-size: 3rem;
 }
 
-.hour-forcast-item .temperature {
+.scrollable-h .temperature {
   font-size: 1.6rem;
+}
+
+.temperature.min {
+  color: cyan;
+}
+
+.temperature.max {
+  color: coral;
 }
