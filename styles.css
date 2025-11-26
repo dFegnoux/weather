@@ -1,3 +1,19 @@
+:root {
+  --sm-space: .4rem;
+  --md-space: .8rem;
+  --lg-space: 1.6rem;
+  --xl-space: 3.2rem;
+
+  --font-base: 1.6rem;
+  --font-title: 1.8rem;
+  --font-lgc: 3rem;
+
+  --bg-color-default: #2A7B9B;
+  --color-default: #fff;
+
+  --radius-md: .8rem;
+}
+
 html {
   font-size: 10px;
 }
@@ -7,11 +23,11 @@ body {
   flex-direction: column;
   align-items: center;
   position: relative;
-  padding: 1.2rem;
+  padding: var(--lg-space);
   background: #2A7B9B;
   background: linear-gradient(180deg, rgba(42, 123, 155, 1) 0%, rgba(36, 105, 133, 1) 100%);
-  color: #fff;
-  font-size: 1.6rem;
+  color: var(--color-default);
+  font-size: var(--font-base);
   overflow-x: hidden;
 }
 
@@ -22,13 +38,13 @@ main {
   width: 100%;
   height: 100%;
   align-items: center;
-  gap: 1.6rem;
+  gap: var(--lg-space);
 }
 
 .panel {
   background: rgba(0,0,0,.5);
-  border-radius: .8rem;
-  padding: .8rem;
+  border-radius: var(--radius-md);
+  padding: var(--md-space);
   max-width: 100%;
   width: 100%;
 }
@@ -37,13 +53,13 @@ main {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 1.6rem;
-  margin-bottom: .8rem;
+  gap: var(--lg-space);
+  margin-bottom: var(--md-space);
   width: 100%;
-  padding: .4rem 0;
-  border-bottom: 1px solid #fff;
+  padding: var(--sm-space) 0;
+  border-bottom: 1px solid var(--color-default);
   text-align: center;
-  font-size: 1.8rem;
+  font-size: var(--font-title);
 }
 
 .panel-detail {
@@ -56,14 +72,14 @@ main {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 2rem;
+  gap: var(--lg-space);
 }
 
 .details {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1rem;
+  gap: var(--md-space);
 }
 
 .temperature {
@@ -84,7 +100,7 @@ main {
   position: relative;
   display: flex;
   justify-self: end;
-  gap: 1rem;
+  gap: var(--md-space);
   justify-content: space-between;
   width: 100%;
 }
@@ -110,24 +126,25 @@ main {
 .scrollable-h {
   overflow-x: scroll;
   display: flex;
-  gap: 1.6rem;
-  padding-bottom: .8rem;
+  gap: var(--md-space);
+  padding-bottom: var(--md-space);
 }
 
 .scrollable-h .scrollable-item {
+  min-width: 9rem;
   background: rgba(255,255,255,.1);
   border: 1px solid transparent;
-  border-radius: .8rem;
-  padding: .4rem;
+  border-radius: var(--radius-md);
+  padding: var(--sm-space);
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: .8rem;
+  gap: var(--md-space);
 }
 
 .scrollable-h .present {
   background: rgba(255,255,255,.1);
-  border-color: #fff;
+  border-color: var(--color-default);
 }
 
 .scrollable-h .past {
@@ -135,11 +152,11 @@ main {
 }
 
 .scrollable-h .interpretation {
-  font-size: 3rem;
+  font-size: var(--font-lg);
 }
 
 .scrollable-h .temperature {
-  font-size: 1.6rem;
+  font-size: var(--font-base)
 }
 
 .temperature.min {
