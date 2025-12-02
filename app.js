@@ -4,7 +4,7 @@
  */
 
 import { fetchCurrentWeather } from './weatherAPI.js'
-import { displayCurrentWeather, displayHourlyWeather, displayDailyWeather } from './domUpdaters.js'
+import { displayCurrentWeather, displayHourlyWeather, displayDailyWeather, setCurrentCity } from './domUpdaters.js'
 import { initializeCityInput } from './locationSuggestions.js'
 
 /**
@@ -19,6 +19,7 @@ addEventListener("load", async () => {
 
   // Charge et affiche les données météo par défaut
   const defaultWeather = await fetchCurrentWeather(defaultGeoCode)
+  setCurrentCity('Crégy-lès-Meaux')
   displayCurrentWeather(defaultWeather.current, defaultWeather.current_units)
   displayHourlyWeather(defaultWeather.hourly, defaultWeather.current_units, defaultWeather.current.time)
   displayDailyWeather(defaultWeather.daily, defaultWeather.daily_units, defaultWeather.current.time)

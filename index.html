@@ -11,20 +11,13 @@
 <body>
   <main>
     <section class="panel">
-      <h1 class="panel-title">En ce moment<span class="panel-detail">(<span id="current-time">...</span>)</span></h1>
-      <div class="panel-content">
-        <div class="current-interpretation">
-          <div id="current-interpretation-picture" class="interpretation-picture"></div>
-          <div id="current-interpretation-text"></div>
-        </div>
-        <div class="details">
-          <div class="time">
-            <span id="current-city">Crégy-les-Meaux</span>
-          </div>
-          <div class="temperature">🌡️&nbsp;<span id="current-temperature">...</span></div>
-          <div class="humidity">💦&nbsp;<span id="current-humidity">...</span></div>
-          <div class="wind">🌬️&nbsp;<span id="current-wind-speed">...</span></div>
-        </div>
+      <h1 class="panel-title">
+        <span>En ce moment à <span id="weather-location-name"></span></span>
+        <span class="panel-detail">(<span id="current-time">...</span>)</span>
+      </h1>
+      <div id="current-weather" class="panel-content">
+        <div id="current-interpretation" class="current-interpretation"></div>
+        <div id="current-details" class="details"></div>
       </div>
     </section>
     <section class="panel">

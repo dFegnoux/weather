@@ -10,48 +10,11 @@ const setCurrentTime = (time) => {
 }
 
 /**
- * Met à jour l'interprétation météo dans le DOM
- * @param {Object} interpretation - Objet contenant l'emoji et le texte
- * @param {string} interpretation.picture - Emoji météo
- * @param {string} interpretation.text - Description textuelle
- */
-export const setCurrentInterpretation = (interpretation) => {
-  document.getElementById('current-interpretation-picture').innerText = interpretation.picture
-  document.getElementById('current-interpretation-text').innerText = interpretation.text
-}
-
-/**
- * Met à jour la température actuelle dans le DOM
- * @param {number} temperature - Température
- * @param {string} unit - Unité de température
- */
-export const setCurrentTemperature = (temperature, unit) => {
-  document.getElementById('current-temperature').innerText = temperature + ' ' + unit
-}
-
-/**
- * Met à jour l'humidité actuelle dans le DOM
- * @param {number} humidity - Pourcentage d'humidité
- */
-export const setCurrentHumidity = (humidity) => {
-  document.getElementById('current-humidity').innerText = humidity + '%'
-}
-
-/**
- * Met à jour la vitesse du vent dans le DOM
- * @param {number} windSpeed - Vitesse du vent
- * @param {string} unit - Unité de vitesse
- */
-export const setCurrentWind = (windSpeed, unit) => {
-  document.getElementById('current-wind-speed').innerText = windSpeed + ' ' + unit
-}
-
-/**
  * Met à jour le nom de la ville dans le DOM
  * @param {string} city - Nom de la ville
  */
 export const setCurrentCity = (city) => {
-  document.getElementById('current-city').innerText = city
+  document.getElementById('weather-location-name').innerText = city
 }
 
 /**
@@ -63,10 +26,36 @@ export const displayCurrentWeather = (data, units) => {
   if (!data || !units) return
 
   setCurrentTime(data.time)
-  setCurrentTemperature(data.temperature_2m, units.temperature_2m)
-  setCurrentInterpretation(getWeatherInterpretation(data.weather_code))
-  setCurrentHumidity(data.relative_humidity_2m)
-  setCurrentWind(data.wind_speed_10m, units.wind_speed_10m)
+  
+  // Build current weather interpretation
+  const {picture, text} = getWeatherInterpretation(data.weather_code)
+  const interpretationPictureEl = document.createElement('div')
+  interpretationPictureEl.className = 'picture'
+  interpretationPictureEl.innerText = picture
+  const interpretationLegendEl = document.createElement('div')
+  interpretationLegendEl.className = 'legend'
+  interpretationLegendEl.innerText = text
+  
+  // Add interpretation to the DOM
+  const currentInterpretationEl = document.getElementById('current-interpretation')
+  currentInterpretationEl.append(interpretationPictureEl, interpretationLegendEl)
+
+  // Build current weather details
+  const currentTempEl = document.createElement('div')
+  currentTempEl.className = 'temperature'
+  currentTempEl.innerHTML = `🌡️&nbsp;${data.temperature_2m}&nbsp;${units.temperature_2m}`
+
+  const currentHumidity = document.createElement('div')
+  currentHumidity.className = 'humidity'
+  currentHumidity.innerHTML = `🌬️&nbsp;${data.relative_humidity_2m}&nbsp;${units.relative_humidity_2m}`
+
+  const currentWindEl = document.createElement('div')
+  currentWindEl.className = 'wind'
+  currentWindEl.innerHTML = `💧&nbsp;${data.wind_speed_10m}&nbsp${units.wind_speed_10m}`
+  
+  // Add details to the DOM
+  const currentDetails = document.getElementById('current-details')
+  currentDetails.append(currentTempEl, currentHumidity, currentWindEl)
 }
 
 /**
