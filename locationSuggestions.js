@@ -1,5 +1,5 @@
 import { fetchLocationSuggestions, fetchCurrentWeather } from './weatherAPI.js'
-import { displayCurrentWeather, setCurrentCity } from './domUpdaters.js'
+import { displayAllWeather, setCurrentCity } from './domUpdaters.js'
 
 /**
  * Vide la liste des suggestions et le champ de saisie
@@ -19,7 +19,7 @@ export const chooseSuggestion = async (event) => {
     longitude: event.target.getAttribute('data-longitude'),
     latitude: event.target.getAttribute('data-latitude')
   })
-  displayCurrentWeather(currentWeatherData)
+  displayAllWeather(currentWeatherData)
   clearSuggestions()
 }
 

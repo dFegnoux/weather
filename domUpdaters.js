@@ -51,6 +51,7 @@ export const displayCurrentWeather = (data, units) => {
   
   // Add interpretation to the DOM
   const currentInterpretationEl = document.getElementById('current-interpretation')
+  currentInterpretationEl.innerHTML = ''
   currentInterpretationEl.append(interpretationPictureEl, interpretationLegendEl)
 
   // Build current weather details
@@ -68,6 +69,7 @@ export const displayCurrentWeather = (data, units) => {
 
   // Add details to the DOM
   const currentDetails = document.getElementById('current-details')
+  currentDetails.innerHTML = ''
   currentDetails.append(currentTempEl, currentHumidity, currentWindEl, getWindDirectionElement(data.windDirection))
 }
 
@@ -117,6 +119,7 @@ export const displayHourlyWeather = (data, units, fetchTime) => {
   if (!data || !units) return
 
   const hourlyContainerEl = document.getElementById('hourly-container')
+  hourlyContainerEl.innerHTML = ''
 
   const hoursList = data.time.slice(0, 24) // Keep only the 24 hours of the current day
     .map((time, index) => {
@@ -183,6 +186,7 @@ export const displayDailyWeather = (data, units, fetchTime) => {
   if (!data || !units) return
 
   const dailyContainerEl = document.getElementById('daily-container')
+  dailyContainerEl.innerHTML = ''
   const dayList = data.time.map((time, index) => {
     const formattedDate = formatDateToDay(time)
     const maxTemperature = data.temperature_2m_max[index] + '&nbsp;' + units.temperature_2m_max
@@ -198,4 +202,16 @@ export const displayDailyWeather = (data, units, fetchTime) => {
   dailyContainerEl.append(...dayList)
   const activeDayEl = document.getElementById('active-day')
   activeDayEl.scrollIntoView({ behavior: 'smooth', inline: 'center' })
+}
+
+/**
+ * Affiche toutes les données météo
+ * @param {Object} data - Données météo complètes de l'API Open-Meteo
+ */
+export const displayAllWeather = (data) => {
+  if(!data) return
+
+  displayCurrentWeather(data.current, data.current_units)
+  displayHourlyWeather(data.hourly, data.current_units, data.current.time)
+  displayDailyWeather(data.daily, data.daily_units, data.current.time)
 }
