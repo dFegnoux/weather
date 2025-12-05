@@ -27,7 +27,6 @@ export const getRelativeDay = (referenceTime, time) => {
   
   const referenceDay = new Date(referenceTime).getDate()
   const timeDay = new Date(time).getDate()
-  console.table({referenceTime, time, referenceDay, timeDay})
 
   if(referenceDay > timeDay) return 'past'
   if(referenceDay === timeDay) return 'present'

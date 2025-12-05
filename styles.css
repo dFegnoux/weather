@@ -96,6 +96,10 @@ main {
   font-size: 10rem;
 }
 
+.wind-direction {
+  display: inline-block;
+}
+
 .change-city-form {
   position: relative;
   display: flex;

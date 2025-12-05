@@ -9,9 +9,9 @@ export const getForecastURL = ({ latitude, longitude }) => {
   const searchParams = new URLSearchParams({
     latitude,
     longitude,
-    current: ['temperature_2m', 'weather_code', 'wind_speed_10m', 'relative_humidity_2m'],
-    daily: ['weather_code', 'temperature_2m_max', 'temperature_2m_min', 'wind_speed_10m_max', 'sunrise', 'sunset'],
-    hourly: ['temperature_2m', 'relative_humidity_2m', 'wind_speed_10m', 'weather_code' ],
+    current: ['temperature_2m', 'weather_code', 'wind_speed_10m', 'wind_direction_10m', 'relative_humidity_2m'],
+    daily: ['weather_code', 'temperature_2m_max', 'temperature_2m_min', 'wind_speed_10m_max', 'wind_direction_10m_dominant', 'sunrise', 'sunset'],
+    hourly: ['temperature_2m', 'relative_humidity_2m', 'wind_speed_10m', 'wind_direction_10m', 'weather_code'],
     timezone: 'Europe/Berlin',
     forecast_days: '7'
   })
@@ -37,7 +37,7 @@ export const fetchCurrentWeather = async (geoCode) => {
       throw new Error(`Response status: ${forecastResponse.status}`);
     }
     return await forecastResponse.json();
-  } catch(e) {
+  } catch (e) {
     console.error('Error while getting current weather', e)
   }
 }
@@ -61,7 +61,7 @@ export const fetchLocationSuggestions = async (text) => {
       throw new Error(`GeoCode Response status: ${geoCodeResponse.status}`);
     }
     return await geoCodeResponse.json();
-  } catch(error) {
+  } catch (error) {
     console.error('Something went wrong while getting location suggestions', error)
   }
 }
