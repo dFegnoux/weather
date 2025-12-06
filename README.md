@@ -8,11 +8,10 @@ Live app: https://dfegnoux.github.io/weather/
 
 ### Modules
 
+- **`modules`** - Modules principaux manipulant le DOM
 - **`utils`** - Fonctions utilitaires au projet
-- **`weatherAPI.js`** - Gestion des appels à l'API météo
-- **`weatherInterpretation.js`** - Interprétation des codes météo
-- **`domUpdaters.js`** - Manipulation du DOM
-- **`locationSuggestions.js`** - Gestion des suggestions de localisation
+- **`services`** - Gestion des appels à l'API météo
+- **`style`** - Gestion des feuilles de style
 - **`app.js`** - Point d'entrée principal
 
 ## Utilisation

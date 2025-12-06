@@ -3,8 +3,8 @@
  * Orchestre l'initialisation et les interactions de l'application
  */
 
-import { fetchCurrentWeather } from './weatherAPI.js'
-import { displayAllWeather, setCurrentCity } from './domUpdaters.js'
+import { fetchForecast } from './services/forecast.js'
+import { displayAllWeather, setCurrentCity } from './modules/common.js'
 import { initializeCityInput } from './locationSuggestions.js'
 
 /**
@@ -18,7 +18,7 @@ addEventListener("load", async () => {
   }
 
   // Charge et affiche les données météo par défaut
-  const defaultWeather = await fetchCurrentWeather(defaultGeoCode)
+  const defaultWeather = await fetchForecast(defaultGeoCode)
   setCurrentCity('Crégy-lès-Meaux')
   displayAllWeather(defaultWeather)
 
