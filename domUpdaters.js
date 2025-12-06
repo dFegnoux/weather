@@ -70,7 +70,7 @@ export const displayCurrentWeather = (data, units) => {
   // Add details to the DOM
   const currentDetails = document.getElementById('current-details')
   currentDetails.innerHTML = ''
-  currentDetails.append(currentTempEl, currentHumidity, currentWindEl, getWindDirectionElement(data.windDirection))
+  currentDetails.append(currentTempEl, currentHumidity, currentWindEl, getWindDirectionElement(data.wind_direction_10m))
 }
 
 /**
