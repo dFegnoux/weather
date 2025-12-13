@@ -41,11 +41,11 @@ export const displayCurrentWeather = (data, units) => {
 
   const currentHumidity = document.createElement('div')
   currentHumidity.className = 'humidity'
-  currentHumidity.innerHTML = `🌬️&nbsp;${data.relative_humidity_2m}&nbsp;${units.relative_humidity_2m}`
+  currentHumidity.innerHTML = `💧&nbsp;${data.relative_humidity_2m}&nbsp;${units.relative_humidity_2m}`
 
   const currentWindEl = document.createElement('div')
   currentWindEl.className = 'wind'
-  currentWindEl.innerHTML = `💧&nbsp;${data.wind_speed_10m}&nbsp${units.wind_speed_10m}`
+  currentWindEl.innerHTML = `🌬️&nbsp;${data.wind_speed_10m}&nbsp${units.wind_speed_10m}`
 
   // Add details to the DOM
   const currentDetails = document.getElementById('current-details')
