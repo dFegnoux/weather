@@ -15,20 +15,20 @@ const setCurrentTime = (time) => {
  * @param {Object} data - Données météo de l'API Open-Meteo
  * @param {Object} units - Unités météo de l'API Open-Meteo
  */
-export const displayCurrentWeather = (data, units) => {
+export const displayCurrentWeather = (data, units, nextPrecipitationTime) => {
   if (!data || !units) return
 
   setCurrentTime(data.time)
-  
+
   // Build current weather interpretation
-  const {picture, text} = getWeatherInterpretation(data.weather_code)
+  const { picture, text } = getWeatherInterpretation(data.weather_code)
   const interpretationPictureEl = document.createElement('div')
   interpretationPictureEl.className = 'picture'
   interpretationPictureEl.innerText = picture
   const interpretationLegendEl = document.createElement('div')
   interpretationLegendEl.className = 'legend'
   interpretationLegendEl.innerText = text
-  
+
   // Add interpretation to the DOM
   const currentInterpretationEl = document.getElementById('current-interpretation')
   currentInterpretationEl.innerHTML = ''
@@ -51,4 +51,12 @@ export const displayCurrentWeather = (data, units) => {
   const currentDetails = document.getElementById('current-details')
   currentDetails.innerHTML = ''
   currentDetails.append(currentTempEl, currentHumidity, currentWindEl, getWindDirectionElement(data.wind_direction_10m))
+
+  // Display next precipitation only if it exists
+  if (!!nextPrecipitationTime) {
+    const nextPrecipitationEl = document.createElement('div')
+    nextPrecipitationEl.className = 'nextPrecipitation'
+    nextPrecipitationEl.innerHTML = `☂️&nbsp;${nextPrecipitationTime}`
+    currentDetails.append(nextPrecipitationEl)
+  }
 }
