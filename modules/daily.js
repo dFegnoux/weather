@@ -1,12 +1,12 @@
 import { getWindDirectionElement } from './common.js'
-import { formatDateToDay, getRelativeDay } from '../utils/time.js'
+import { formatDateToDay, getRelativeDay, formatTime } from '../utils/time.js'
 import { getWeatherInterpretation } from '../utils/weatherInterpretation.js'
 
 /**
  * Construit un élement météo pour un jour donné
  * @param {Object} data - Données préformattées à injecter dans le DOM
  */
-const getDailyNode = ({ formattedDate, maxTemperature, minTemperature, wind, windDirection, interpretation, relativeDay }) => {
+const getDailyNode = ({ formattedDate, maxTemperature, minTemperature, wind, windDirection, interpretation, relativeDay, sunrise, sunset }) => {
   const dayEl = document.createElement('div')
   dayEl.className = `scrollable-item ${relativeDay}`
   dayEl.id = relativeDay === 'present' ? 'active-day' : ''
@@ -33,7 +33,17 @@ const getDailyNode = ({ formattedDate, maxTemperature, minTemperature, wind, win
   interpretationEl.className = 'interpretation'
   interpretationEl.innerHTML = interpretation.picture
 
-  dayEl.append(dateEl, interpretationEl, maxTemperatureEl, minTemperatureEl, windEl, windDirectionEl)
+  const twilightEl = document.createElement('div')
+  twilightEl.className = 'twilight'
+
+  const sunriseEl = document.createElement('span')
+  sunriseEl.innerHTML = `🌅&nbsp;${formatTime(sunrise)}`
+  const sunsetEl = document.createElement('span')
+  sunsetEl.innerHTML = `🌇&nbsp;${formatTime(sunset)}`
+
+  twilightEl.append(sunriseEl,sunsetEl)
+
+  dayEl.append(dateEl, interpretationEl, maxTemperatureEl, minTemperatureEl, windEl, windDirectionEl, twilightEl)
 
   return dayEl
 }
@@ -57,8 +67,10 @@ export const displayDailyWeather = (data, units, fetchTime) => {
     const windDirection = data.wind_direction_10m_dominant[index]
     const interpretation = getWeatherInterpretation(data.weather_code[index])
     const relativeDay = getRelativeDay(fetchTime, time)
+    const sunrise = data.sunrise[index]
+    const sunset = data.sunset[index]
 
-    return getDailyNode({ formattedDate, maxTemperature, minTemperature, wind, windDirection, interpretation, relativeDay })
+    return getDailyNode({ formattedDate, maxTemperature, minTemperature, wind, windDirection, interpretation, relativeDay, sunrise, sunset })
   })
 
   dailyContainerEl.append(...dayList)

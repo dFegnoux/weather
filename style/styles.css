@@ -170,3 +170,9 @@ main {
 .temperature.max {
   color: coral;
 }
+
+.twilight {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
