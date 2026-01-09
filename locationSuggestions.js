@@ -1,6 +1,7 @@
 import { fetchForecast } from './services/forecast.js'
 import { fetchLocationSuggestions } from './services/location.js'
 import { displayAllWeather, setCurrentCity } from './modules/common.js'
+import { saveLocation } from './utils/location.js'
 
 /**
  * Vide la liste des suggestions et le champ de saisie
@@ -15,12 +16,18 @@ export const clearSuggestions = () => {
  * @param {Event} event - Événement de clic
  */
 export const chooseSuggestion = async (event) => {
-  setCurrentCity(event.target.innerText)
-  const currentWeatherData = await fetchForecast({
-    longitude: event.target.getAttribute('data-longitude'),
-    latitude: event.target.getAttribute('data-latitude')
-  })
+  const location = {
+    geocode: {
+      longitude: event.target.getAttribute('data-longitude'),
+      latitude: event.target.getAttribute('data-latitude')
+    },
+    label: event.target.innerText
+  }
+
+  setCurrentCity(location.label)
+  const currentWeatherData = await fetchForecast(location.geocode)
   displayAllWeather(currentWeatherData)
+  saveLocation(location)
   clearSuggestions()
 }
 

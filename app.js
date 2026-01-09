@@ -6,20 +6,18 @@
 import { fetchForecast } from './services/forecast.js'
 import { displayAllWeather, setCurrentCity } from './modules/common.js'
 import { initializeCityInput } from './locationSuggestions.js'
+import { getDefaultLocation } from './utils/location.js'
 
 /**
  * Initialise l'application au chargement de la page
  */
 addEventListener("load", async () => {
-  // Coordonnées par défaut (région parisienne)
-  const defaultGeoCode = {
-    latitude: '48.9765',
-    longitude: '2.8748'
-  }
+ 
+  const defaultLocation = getDefaultLocation()
 
   // Charge et affiche les données météo par défaut
-  const defaultWeather = await fetchForecast(defaultGeoCode)
-  setCurrentCity('Crégy-lès-Meaux')
+  const defaultWeather = await fetchForecast(defaultLocation.geocode)
+  setCurrentCity(defaultLocation.label)
   displayAllWeather(defaultWeather)
 
   // Initialise la gestion de la saisie de ville

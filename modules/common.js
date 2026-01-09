@@ -48,7 +48,6 @@ export const getTodayNextPrecipitationHour = (hourlyData, fetchTime) => {
   const todayNextPrecipitationsIndex = hourlyData.precipitation_probability.slice(0, 24).findIndex((hourProbability, index) =>
     hourProbability >= 40 && getRelativeTime(fetchTime, hourlyData.time[index] !== 'past')
   )
-  console.log(todayNextPrecipitationsIndex)
 
   // Ne rien retourner si aucun résultat n'a été trouvé
   if (!todayNextPrecipitationsIndex === -1) return
